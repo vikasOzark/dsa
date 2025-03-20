@@ -1,18 +1,9 @@
 from typing import Self, Optional
-from dataclasses import dataclass
+
+T = type("T")
 
 
-@dataclass
-class TreeDisplayConfig:
-    """Configuration for tree display characters."""
-    vertical: str = "│"
-    horizontal: str = "─"
-    left_corner: str = "└"
-    right_corner: str = "┌"
-    space: str = " "
-
-
-class TreeNode:
+class TreeNode[T]:
     """A class representing a node in a binary tree.
 
     Each node contains data and references to left and right child nodes.
@@ -28,7 +19,7 @@ class TreeNode:
         >>> node.right = TreeNode(7)
     """
 
-    def __init__(self, data, left: Optional[Self] = None, right: Optional[Self] = None) -> None:
+    def __init__(self, data: T, left: Optional[Self] = None, right: Optional[Self] = None) -> None:
         """Initialize a new TreeNode.
 
         Args:
@@ -44,7 +35,7 @@ class TreeNode:
         self.right = right
 
 
-class BinaryTree:
+class BinaryTree[T]:
     """A class representing a binary tree data structure.
 
     A binary tree is a tree data structure where each node has at most
@@ -60,14 +51,12 @@ class BinaryTree:
         >>> tree.root.right = TreeNode(3)
     """
 
-    def __init__(self, root: Optional[TreeNode] = None):
+    def __init__(self, root: Optional[TreeNode[T]] = None):
         """Initialize an empty binary tree.
 
         The tree is initialized with no root node (None).
         """
         self.root = root
-        self.display_config = TreeDisplayConfig()
-        self.max_depth = 1000  # Prevent stack overflow
 
     def pp_tree(self, root_node: Optional[TreeNode] = None, prefix="", isLeft=True):
         node = root_node if root_node is not None else self.root
@@ -78,10 +67,10 @@ class BinaryTree:
 
         if node.right:
             self.pp_tree(node.right, prefix +
-                                 ("│   " if isLeft else "    "), False)
+                         ("│   " if isLeft else "    "), False)
 
         print(prefix + ("└── " if isLeft else "┌── ") + f"[{str(node.data)}]")
 
         if node.left:
             self.pp_tree(node.left, prefix +
-                                 ("    " if isLeft else "│   "), True)
+                         ("    " if isLeft else "│   "), True)
