@@ -130,6 +130,36 @@ class SolutionIterative[T](BinaryTree[T]):
 
         return result
 
+    def pre_order_recursive(self) -> list[T]:
+        if not self.root:
+            return []
+
+        def pre_order(root: TreeNode):
+            if not root:
+                return []
+
+            left = pre_order(root.left)
+            right = pre_order(root.right)
+
+            return [root.data] + left + right
+
+        return pre_order(self.root)
+
+    def post_order_recursive(self) -> list[T]:
+        if not self.root:
+            return []
+
+        def post_order(root: TreeNode):
+            if not root:
+                return []
+
+            left = post_order(root.left)
+            right = post_order(root.right)
+
+            return [] + left + right + [root.data]
+
+        return post_order(self.root)
+
 
 def main():
     # Create a binary tree:
@@ -155,7 +185,7 @@ def main():
     bft = SolutionIterative(root)
     # print(bft.pre_order_iterative())
 
-    print(bft.level_order_iterative())
+    print(bft.post_order_recursive())
 
     # Visualize the tree structure
     print("\nTree structure:")
