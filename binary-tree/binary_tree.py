@@ -1,16 +1,18 @@
 from base_tree import BinaryTree, TreeNode
 from collections import deque
-from typing import Self
+from typing import Self, TypeVar
+
+T = TypeVar("T")
 
 
-class Solution[T](BinaryTree[T]):
+class SolutionIterative[T](BinaryTree[T]):
     def __init__(self, root: TreeNode[T]):
         super().__init__(root)
 
     def pre_order_iterative(self) -> list[T]:
         """Pre order traversal defined as a type of `tree traversal` that 
         follows the `root` -> `left-tree` -> `right-tree` policy where:
-        
+
         - The `root` node of left `subtree` is visited first.
         - Then the left `subtree` is traversed.
         - At last, the right `subtree` is traversed.
@@ -32,10 +34,10 @@ class Solution[T](BinaryTree[T]):
                 stack.append(left)
         return result
 
-    def post_order_iterative(self):
+    def post_order_iterative(self) -> list[T]:
         """Post order traversal is defined as a type of `tree traversal` that
         follows the `left` -> `right` -> `root` policy where:
-        
+
         - The `left subtree` is traversed first.
         - Then `right subtree` is traversed.
         - Finally, the `root node of the subtree is traversed.
@@ -81,7 +83,7 @@ class Solution[T](BinaryTree[T]):
                     last_visited = stack.pop()
         return result
 
-    def in_order_iterative(self):
+    def in_order_iterative(self) -> list[T]:
         """In order traversal is type of traversal which is `left` -> `root` -> `right` where:
         - Traverse `left subtree` first.
         - Then traverse `root of the subtree`.
@@ -92,20 +94,41 @@ class Solution[T](BinaryTree[T]):
             return []
 
         stack = list()
-        result: T = []
-        current: TreeNode[T] | None = None
+        result: list[T] = []
+        current: TreeNode[T] | None = self.root
 
-        while stack:
-            if current:
+        while stack or current:
+            while current:
                 stack.append(current)
                 current = current.left
-            else:
-                ...
 
+            current = stack.pop()
+            result.append(current.data)
+            current = current.right
 
+        return result
 
+    def level_order_iterative(self) -> list[T]:
+        """Level order traversal is a type of traversal where on every iteration we go 
+        on every level of the tree and get the data."""
 
-    def level_order_iterative(self): ...
+        if not self.root:
+            return []
+
+        stack = deque([self.root])
+        result = []
+
+        while stack:
+            current = stack.popleft()
+            result.append(current.data)
+
+            if left := current.left:
+                stack.append(left)
+
+            if right := current.right:
+                stack.append(right)
+
+        return result
 
 
 def main():
@@ -129,14 +152,15 @@ def main():
     root.right.right = TreeNode(8)
 
     # Create tree and run traversal
-    bft = Solution(root)
+    bft = SolutionIterative(root)
     # print(bft.pre_order_iterative())
 
-    print(bft.in_order_iterative())
+    print(bft.level_order_iterative())
 
     # Visualize the tree structure
     print("\nTree structure:")
     bft.pp_tree()
+
 
 if __name__ == "__main__":
     main()
