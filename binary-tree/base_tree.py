@@ -1,9 +1,9 @@
-from typing import Self, Optional
+from typing import Self, Optional, TypeVar, Generic
 
-T = type("T")
+T = TypeVar("T")
 
 
-class TreeNode[T]:
+class TreeNode(Generic[T]):
     """A class representing a node in a binary tree.
 
     Each node contains data and references to left and right child nodes.
