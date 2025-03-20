@@ -77,11 +77,11 @@ class BinaryTree:
             return
 
         if node.right:
-            self.prettyPrintTree(node.right, prefix +
+            self.pp_tree(node.right, prefix +
                                  ("│   " if isLeft else "    "), False)
 
         print(prefix + ("└── " if isLeft else "┌── ") + f"[{str(node.data)}]")
 
         if node.left:
-            self.prettyPrintTree(node.left, prefix +
+            self.pp_tree(node.left, prefix +
                                  ("    " if isLeft else "│   "), True)
