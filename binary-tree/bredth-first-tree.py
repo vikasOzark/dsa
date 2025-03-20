@@ -81,8 +81,29 @@ class Solution[T](BinaryTree[T]):
                     last_visited = stack.pop()
         return result
 
+    def in_order_iterative(self):
+        """In order traversal is type of traversal which is `left` -> `root` -> `right` where:
+        - Traverse `left subtree` first.
+        - Then traverse `root of the subtree`.
+        - Finally, Traverse `right subtree`. 
+        """
 
-    def in_order_iterative(self): ...
+        if not self.root:
+            return []
+
+        stack = list()
+        result: T = []
+        current: TreeNode[T] | None = None
+
+        while stack:
+            if current:
+                stack.append(current)
+                current = current.left
+            else:
+                ...
+
+
+
 
     def level_order_iterative(self): ...
 
@@ -111,7 +132,7 @@ def main():
     bft = Solution(root)
     # print(bft.pre_order_iterative())
 
-    print(bft.post_order_iterative_v2())
+    print(bft.in_order_iterative())
 
     # Visualize the tree structure
     print("\nTree structure:")
