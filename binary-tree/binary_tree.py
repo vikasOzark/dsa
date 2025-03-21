@@ -1,6 +1,6 @@
 from base_tree import BinaryTree, TreeNode
 from collections import deque
-from typing import Self, TypeVar
+from typing import TypeVar
 
 T = TypeVar("T")
 
@@ -33,6 +33,21 @@ class SolutionIterative[T](BinaryTree[T]):
             if left := current.left:
                 stack.append(left)
         return result
+
+    def pre_order_recursive(self) -> list[T]:
+        if not self.root:
+            return []
+
+        def pre_order(root: TreeNode):
+            if not root:
+                return []
+
+            left = pre_order(root.left)
+            right = pre_order(root.right)
+
+            return [root.data] + left + right
+
+        return pre_order(self.root)
 
     def post_order_iterative(self) -> list[T]:
         """Post order traversal is defined as a type of `tree traversal` that
@@ -83,6 +98,21 @@ class SolutionIterative[T](BinaryTree[T]):
                     last_visited = stack.pop()
         return result
 
+    def post_order_recursive(self) -> list[T]:
+        if not self.root:
+            return []
+
+        def post_order(root: TreeNode):
+            if not root:
+                return []
+
+            left = post_order(root.left)
+            right = post_order(root.right)
+
+            return [] + left + right + [root.data]
+
+        return post_order(self.root)
+
     def in_order_iterative(self) -> list[T]:
         """In order traversal is type of traversal which is `left` -> `root` -> `right` where:
         - Traverse `left subtree` first.
@@ -108,6 +138,20 @@ class SolutionIterative[T](BinaryTree[T]):
 
         return result
 
+    def in_order_recursive(self) -> list[T]:
+        if not self.root:
+            return []
+
+        def in_order(root: TreeNode[T]) -> list[T]:
+            if not root:
+                return []
+
+            left = in_order(root.left)
+            right = in_order(root.right)
+            return [] + left + [root.data] + right
+
+        return in_order(self.root)
+
     def level_order_iterative(self) -> list[T]:
         """Level order traversal is a type of traversal where on every iteration we go 
         on every level of the tree and get the data."""
@@ -130,35 +174,39 @@ class SolutionIterative[T](BinaryTree[T]):
 
         return result
 
-    def pre_order_recursive(self) -> list[T]:
+    def level_order_recursive(self) -> list[T]:
         if not self.root:
             return []
 
-        def pre_order(root: TreeNode):
+        def level_order(root: TreeNode[T], level: int, result: list[list]) -> list[T]:
             if not root:
-                return []
+                return
 
-            left = pre_order(root.left)
-            right = pre_order(root.right)
+            if len(result) == level:
+                result.append([])
 
-            return [root.data] + left + right
+            result[level].append(root.data)
+            level_order(root.left, level+1, result)
+            level_order(root.right, level+1, result)
 
-        return pre_order(self.root)
+        result = []
+        level_order(self.root, 0, result)
+        return result
 
-    def post_order_recursive(self) -> list[T]:
+    def level_order_recursive_v2(self) -> list[T]:
         if not self.root:
-            return []
+            return
 
-        def post_order(root: TreeNode):
+        def level_order_v2(root: TreeNode[T], result: list[T]) -> list[T]:
             if not root:
-                return []
+                return
+            result.append(root.data)
+            level_order_v2(root.left, result)
+            level_order_v2(root.right, result)
 
-            left = post_order(root.left)
-            right = post_order(root.right)
-
-            return [] + left + right + [root.data]
-
-        return post_order(self.root)
+        result = []
+        level_order_v2(self.root, result)
+        return result
 
 
 def main():
@@ -185,7 +233,8 @@ def main():
     bft = SolutionIterative(root)
     # print(bft.pre_order_iterative())
 
-    print(bft.post_order_recursive())
+    print(bft.level_order_recursive())
+    print(bft.level_order_recursive_v2())
 
     # Visualize the tree structure
     print("\nTree structure:")
