@@ -1,4 +1,11 @@
-def bubble_sort[T](nums: list[T]) -> list[T]:
+from typing import TypeVar, List
+from typing_extensions import Union
+
+
+T = TypeVar("T", int, float)
+
+
+def bubble_sort(nums: List[T]) -> List[T]:
     """Bubble sort is a sorting algorithm that repeatedly steps through the list,
     compares adjacent elements and swaps them if they are in the wrong order.
     - Outer loop runs from the end to beginning of the list
