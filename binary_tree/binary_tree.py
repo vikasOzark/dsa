@@ -1,3 +1,4 @@
+import collections
 from base_tree import BinaryTree, TreeNode
 from collections import deque
 from typing import TypeVar
@@ -208,6 +209,20 @@ class SolutionIterative[T](BinaryTree[T]):
         level_order_v2(self.root, result)
         return result
 
+    @staticmethod
+    def is_mirror(root: TreeNode[int], root2: TreeNode[int]):
+        if not root and not root2:
+            return True
+
+        elif ((root is None) != (root2 is None)) or root.data != root2.data:
+            return False
+        else:
+            return SolutionIterative.is_mirror(root.left, root.right) and SolutionIterative.is_mirror(root.right, root.left)
+
+    def tree_symmantic(self) -> bool:
+        if not self.root:
+            return True
+        return SolutionIterative.is_mirror(self.root.left, self.root.right)
 
 def main():
     # Create a binary tree:
@@ -221,20 +236,17 @@ def main():
 
     # Level 1
     root.left = TreeNode(3)
-    root.right = TreeNode(7)
+    root.right = TreeNode(3)
 
     # Level 2
     root.left.left = TreeNode(2)
-    root.left.right = TreeNode(4)
-    root.right.left = TreeNode(6)
-    root.right.right = TreeNode(8)
+    root.left.right = TreeNode(2)
+    # root.right.left = TreeNode(6)
+    # root.right.right = TreeNode(8)
 
     # Create tree and run traversal
     bft = SolutionIterative(root)
-    # print(bft.pre_order_iterative())
-
-    print(bft.level_order_recursive())
-    print(bft.level_order_recursive_v2())
+    print(bft.tree_simantic())
 
     # Visualize the tree structure
     print("\nTree structure:")
@@ -243,3 +255,33 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# Node = collections.namedtuple('Node', ['left', 'right', 'value'])
+
+
+# def contains(root, value):
+
+#     if not root:
+#         return False
+
+#     stack = [root]
+#     while stack:
+#         current = stack.pop()
+#         if current.value == value:
+#             return True
+
+#         if left := current.left:
+#             stack.append(left)
+
+#         if right := current.right:
+#             stack.append(right)
+
+#     return False
+
+
+# n1 = Node(value=1, left=None, right=None)
+# n3 = Node(value=3, left=None, right=None)
+# n2 = Node(value=2, left=n1, right=n3)
+
+# print(contains(n2, 3))
