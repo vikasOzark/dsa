@@ -1,4 +1,9 @@
-def selection_sort[T](nums: list[T]) -> list[T]:
+from typing import TypeVar, Union
+
+T = TypeVar("T", int, float)
+
+
+def selection_sort(nums: list[T]) -> list[T]:
     """This is type of sorting algorithm `selection sort` which runs in 
     `O(n2)` time complexity and `O(1)` space complexity.
 
